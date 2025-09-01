@@ -1,12 +1,15 @@
+require('dotenv').config()
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
+const Person = require('./models/person.js')
 const cors = require('cors')
 app.use(cors())
 
 
 app.use(express.json());
 
+const url = process.env.MONGODB_URI
 
 morgan.token('body', (request) => JSON.stringify(request.body));
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
@@ -100,7 +103,7 @@ app.delete('/api/persons/:id', (request, response) => {
 app.get('/info', (request, response) => {
   response.send(`<p>Phonebook has info for ${persons.length} people</p><p>${new Date()}</p>`);
 });
-const PORT = 3001;
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  console.log(`Server running on port ${PORT}`)
+})
